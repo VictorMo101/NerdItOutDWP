@@ -56,3 +56,23 @@ CREATE TABLE Follows (
     FOREIGN KEY (followerID) REFERENCES Users (userID) ON DELETE CASCADE,
     FOREIGN KEY (followedID) REFERENCES Users (userID) ON DELETE CASCADE
 );
+
+CREATE TABLE ReportStatuses (
+    statusID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(20) NOT NULL UNIQUE
+);
+
+INSERT INTO ReportStatuses (name) VALUES ('open'), ('reviewed'), ('dismissed');
+
+CREATE TABLE Reports (
+    reportID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    reporterID INT NOT NULL,
+    postID INT NOT NULL,
+    text VARCHAR(280),
+    statusID INT NOT NULL DEFAULT 1,
+    createdAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE (reporterID, postID),
+    FOREIGN KEY (reporterID) REFERENCES Users (userID) ON DELETE CASCADE,
+    FOREIGN KEY (postID) REFERENCES Posts (postID) ON DELETE CASCADE,
+    FOREIGN KEY (statusID) REFERENCES ReportStatuses (statusID)
+);
