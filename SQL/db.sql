@@ -11,7 +11,8 @@ CREATE TABLE Users (
     bio VARCHAR(500), 
     avatar VARCHAR(2048),
     coinsBalance INT NOT NULL DEFAULT 0,
-    coinsRefillDate DATE 
+    coinsRefillDate DATE,
+    isAdmin BOOLEAN DEFAULT FALSE
 );
 
 CREATE TABLE Posts (
@@ -62,7 +63,7 @@ CREATE TABLE ReportStatuses (
     name VARCHAR(20) NOT NULL UNIQUE
 );
 
-INSERT INTO ReportStatuses (name) VALUES ('open'), ('reviewed'), ('dismissed');
+INSERT INTO ReportStatuses (name) VALUES ('open'), ('approved'), ('disapproved');
 
 CREATE TABLE Reports (
     reportID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
