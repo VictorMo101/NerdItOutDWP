@@ -8,5 +8,7 @@ try {
     $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 } catch (PDOException $e) {
-    die("Failed to connect to MySQL: " . $e->getMessage());
-} 
+    error_log("Database connection failed: " . $e->getMessage());
+    http_response_code(500);
+    die("The application is temporarily unavailable.");
+}
