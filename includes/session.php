@@ -1,12 +1,5 @@
 <?php
-	session_start();
-	
-	function logged_in() {
-		return isset($_SESSION['user_id']);
-	}
-	
-	function confirm_logged_in() {
-		if (!logged_in()) {
-			redirect_to("login.php");
-		}
-	}
+// Kept for legacy entry points; active requests start the session in index.php.
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
