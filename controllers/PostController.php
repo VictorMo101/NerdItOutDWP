@@ -1,8 +1,8 @@
 <?php
 class PostController {
-    private Post $post;
+    private $post;
 
-    public function __construct(Post $post) {
+    public function __construct($post) {
         $this->post = $post;
     }
 
@@ -52,6 +52,42 @@ class PostController {
 
             if (!$created && !isset($_SESSION['post_message'])) {
                 $_SESSION['post_message'] = "The post could not be created.";
+            }
+        }
+
+        redirect_to("index.php?page=home");
+    }
+
+    public function delete() {
+        confirm_logged_in();
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            echo "Method not allowed.";
+            return;
+        }
+
+        $post_id = filter_var(
+            $_POST['post_id'] ?? null,
+            FILTER_VALIDATE_INT,
+            ['options' => ['min_range' => 1]]
+        );
+
+        if (!verify_csrf_token($_POST['csrf_token'] ?? null)) {
+            $_SESSION['post_message'] = "Your session has expired. Please try again.";
+        } elseif ($post_id === false) {
+            $_SESSION['post_message'] = "The selected post is invalid.";
+        } else {
+            try {
+                $deleted = $this->post->delete($post_id, $_SESSION['user_id']);
+            } catch (PDOException $e) {
+                error_log("Post deletion failed: " . $e->getMessage());
+                $deleted = false;
+                $_SESSION['post_message'] = "Posts are temporarily unavailable.";
+            }
+
+            if (!$deleted && !isset($_SESSION['post_message'])) {
+                $_SESSION['post_message'] = "You can only delete your own posts.";
             }
         }
 

@@ -27,6 +27,13 @@
                 </h3>
                 <p><?php echo nl2br(htmlspecialchars($post['text'], ENT_QUOTES, 'UTF-8')); ?></p>
                 <small><?php echo htmlspecialchars($post['createdAt'], ENT_QUOTES, 'UTF-8'); ?></small>
+                <?php if ($post['username'] === $_SESSION['user']): ?>
+                    <form action="index.php?page=delete_post" method="post">
+                        <input type="hidden" name="post_id" value="<?php echo htmlspecialchars($post['postID'], ENT_QUOTES, 'UTF-8'); ?>" />
+                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars(csrf_token(), ENT_QUOTES, 'UTF-8'); ?>" />
+                        <button type="submit">Delete</button>
+                    </form>
+                <?php endif; ?>
             </article>
         <?php endforeach; ?>
     <?php endif; ?>

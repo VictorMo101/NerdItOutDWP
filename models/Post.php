@@ -1,8 +1,8 @@
 <?php
 class Post {
-    private PDO $connection;
+    private $connection;
 
-    public function __construct(PDO $connection) {
+    public function __construct($connection) {
         $this->connection = $connection;
     }
 
@@ -24,5 +24,16 @@ class Post {
         $statement->bindValue(':text', $text, PDO::PARAM_STR);
 
         return $statement->execute();
+    }
+
+    public function delete($post_id, $user_id) {
+        $query = "DELETE FROM Posts
+                  WHERE postID = :post_id AND userID = :user_id";
+        $statement = $this->connection->prepare($query);
+        $statement->bindValue(':post_id', $post_id, PDO::PARAM_INT);
+        $statement->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+        $statement->execute();
+
+        return $statement->rowCount() === 1;
     }
 }

@@ -1,10 +1,10 @@
 <?php
 // CONTROLLER: handles the form, asks the Model, then shows a View.
 class AuthController {
-    private User $user;
+    private $user;
 
     // Receives the User model so the controller can access user-related database functions.
-    public function __construct(User $user) {
+    public function __construct($user) {
         $this->user = $user;
     }
 
