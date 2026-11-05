@@ -7,15 +7,18 @@ session_start([
 require_once __DIR__ . "/includes/connection.php";
 require_once __DIR__ . "/includes/functions.php";
 require_once __DIR__ . "/models/User.php";
+require_once __DIR__ . "/models/Post.php";
 require_once __DIR__ . "/controllers/AuthController.php";
+require_once __DIR__ . "/controllers/PostController.php";
 
 $auth = new AuthController(new User($connection));
+$postController = new PostController(new Post($connection));
 
 $routes = [
-    'home' => 'home',
-    'login' => 'login',
-    'register' => 'register',
-    'logout' => 'logout'
+    'home' => [$postController, 'index'],
+    'login' => [$auth, 'login'],
+    'register' => [$auth, 'register'],
+    'logout' => [$auth, 'logout']
 ];
 $page = $_GET['page'] ?? 'home';
 
@@ -25,4 +28,4 @@ if (!isset($routes[$page])) {
     exit;
 }
 
-$auth->{$routes[$page]}();
+call_user_func($routes[$page]);

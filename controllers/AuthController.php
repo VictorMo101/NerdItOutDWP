@@ -1,4 +1,3 @@
-```php
 <?php
 // CONTROLLER: handles the form, asks the Model, then shows a View.
 class AuthController {
