@@ -16,6 +16,7 @@ $postController = new PostController(new Post($connection));
 
 $routes = [
     'home' => [$postController, 'index'],
+    'create_post' => [$postController, 'create'],
     'login' => [$auth, 'login'],
     'register' => [$auth, 'register'],
     'logout' => [$auth, 'logout']

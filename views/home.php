@@ -9,6 +9,12 @@
 <?php if ($message !== ""): ?>
     <p><?php echo htmlspecialchars($message, ENT_QUOTES, 'UTF-8'); ?></p>
 <?php endif; ?>
+<form action="index.php?page=create_post" method="post">
+    <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars(csrf_token(), ENT_QUOTES, 'UTF-8'); ?>" />
+    <label for="post-text">Create a post</label>
+    <textarea id="post-text" name="text" maxlength="280" required></textarea>
+    <button type="submit">Post</button>
+</form>
 <section>
     <h2>Posts</h2>
     <?php if (empty($posts)): ?>

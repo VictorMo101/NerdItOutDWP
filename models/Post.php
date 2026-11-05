@@ -16,4 +16,13 @@ class Post {
 
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function create($user_id, $text) {
+        $query = "INSERT INTO Posts (userID, text) VALUES (:user_id, :text)";
+        $statement = $this->connection->prepare($query);
+        $statement->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+        $statement->bindValue(':text', $text, PDO::PARAM_STR);
+
+        return $statement->execute();
+    }
 }

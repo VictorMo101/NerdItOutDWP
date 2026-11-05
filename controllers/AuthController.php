@@ -23,8 +23,8 @@ class AuthController {
         $message = "";
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $username = trim((string) ($_POST['user'] ?? ''));
-            $password = (string) ($_POST['pass'] ?? '');
+            $username = trim($_POST['user'] ?? '');
+            $password = $_POST['pass'] ?? '';
 
             // Server-side CSRF validation to make sure the request is legitimate.
             if (!verify_csrf_token($_POST['csrf_token'] ?? null)) {
@@ -46,7 +46,7 @@ class AuthController {
                     session_regenerate_id(true);
 
                     // Store the logged-in user's information in the session.
-                    $_SESSION['user_id'] = (int) $found_user['userID'];
+                    $_SESSION['user_id'] = $found_user['userID'];
                     $_SESSION['user'] = $found_user['username'];
                     redirect_to("index.php");
 
@@ -71,10 +71,10 @@ class AuthController {
 
         // Check if the registration form has been submitted.
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $username = trim((string) ($_POST['user'] ?? ''));
-            $email = trim((string) ($_POST['email'] ?? ''));
-            $display_name = trim((string) ($_POST['displayName'] ?? ''));
-            $password = (string) ($_POST['pass'] ?? '');
+            $username = trim($_POST['user'] ?? '');
+            $email = trim($_POST['email'] ?? '');
+            $display_name = trim($_POST['displayName'] ?? '');
+            $password = $_POST['pass'] ?? '';
 
             // Server-side CSRF validation to protect against forged requests.
             if (!verify_csrf_token($_POST['csrf_token'] ?? null)) {
